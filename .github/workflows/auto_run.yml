@@ -10,18 +10,16 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: Install System Tools
+      - name: Install Multimedia Tools
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-      - name: Install Python Packages
-        run: |
           pip install requests g4f edge-tts moviepy==1.0.3 imageio==2.25.1
-      - name: Execute Script
+      - name: Execute Factory Script
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: python main.py
-      - name: Upload Result
+      - name: Save Video File
         uses: actions/upload-artifact@v3
         with:
           name: Final-Military-Movie
