@@ -1,0 +1,29 @@
+name: Video Factory Run
+on:
+  workflow_dispatch: # يسمح لك بتشغيله يدوياً في أي وقت
+  schedule:
+    - cron: '0 12 * * *' # سيعمل تلقائياً كل يوم الساعة 12 ظهراً
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          pip install requests g4f edge-tts moviepy==1.0.3
+      - name: Execute Script
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: python main.py
+      - name: Upload Finished Video
+        uses: actions/upload-artifact@v3
+        with:
+          name: Full-Military-Video
+          path: final_mission_video.mp4
